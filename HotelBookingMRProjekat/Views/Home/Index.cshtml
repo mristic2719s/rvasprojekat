@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron" style="background-image: url(https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1300,q_auto,w_2000/itemimages/20/09/2009051_v5.jpeg); background-size: 100%;">
+    <h2 style="color:white">Marijana Ristic S27-19 - HOTEL MR Projekat</h2>
+
+
+    <div class="row">
+        @foreach (var sobe in Model)
+        {
+            <div class="col-md-4" style="background-color:floralwhite; opacity:90%; border-radius: 25px; margin-right:40px; margin-top:30px; width:300px;">
+                <div class="card">
+                    <h3>@sobe.HotelSoba.NazivSobe</h3>
+                    <img src="data:image/jpg;base64,@Convert.ToBase64String(sobe.Data)" style="width:200px; height:200px; border-radius: 25px; opacity:100%!important" />
+                    <p style="opacity:100%!important">Cena po danu:  @sobe.HotelSoba.CenaPoDanu EUR </p>
+                    <button class="btn btn-default" style="border-radius: 25px; margin-bottom:10px;"> @Html.ActionLink("Pogledaj ponudu", "Detalji", "HotelTipSobas", new { id = sobe.HotelSoba.Id }, null)</button>
+                </div>
+            </div>
+        }
+        </div>
+    </div>
+
+
+

@@ -1,0 +1,74 @@
+﻿@model HotelBookingMRProjekat.ViewModels.HotelBookingSobaViewModel
+@{
+    ViewBag.Title = "Booking forma";
+}
+
+<style>
+
+    .field-validation-error {
+        color: red;
+    }
+</style>
+
+<h2>Novi booking</h2>
+
+@using (Html.BeginForm("SnimiBooking", "HotelTipSobas"))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BookingSoba.OstajanjeOd)
+        @Html.TextBoxFor(m => m.BookingSoba.OstajanjeOd, "{0:d MMM yyyy}", new { @class = "form-control", @type = "text" })
+        @Html.ValidationMessageFor(m => m.BookingSoba.OstajanjeOd)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BookingSoba.OstajanjeDo)
+        @Html.TextBoxFor(m => m.BookingSoba.OstajanjeDo, "{0:d MMM yyyy}", new { @class = "form-control", @type = "text" })
+        @Html.ValidationMessageFor(m => m.BookingSoba.OstajanjeDo)
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BookingSoba.ApplicationUserId)
+        @Html.DropDownListFor(m => m.BookingSoba.ApplicationUserId, new SelectList(Model.ApplicationUseri, "Id", "UserName"), "Izaberite korisnika", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.BookingSoba.ApplicationUserId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BookingSoba.HotelSobaId)
+        @Html.DropDownListFor(m => m.BookingSoba.HotelSobaId, new SelectList(Model.HotelSobe, "Id", "NazivSobe"), "Izaberite naziv sobe", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.BookingSoba.HotelSobaId)
+    </div>
+
+    @Html.HiddenFor(m => m.BookingSoba.Id);
+    @Html.AntiForgeryToken()
+    <button type="submit" id="dodaj-booking" class="btn btn-primary">Dodaj booking</button>
+
+}
+
+@section scripts
+    {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            $("#dodaj-booking").on("click", function () {
+                var button = $(this);
+                bootbox.confirm("", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/bookingsobaapi/",
+                            method: "POST",
+                            success: function () {
+                                console.log("Uspesno dodat booking");
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}

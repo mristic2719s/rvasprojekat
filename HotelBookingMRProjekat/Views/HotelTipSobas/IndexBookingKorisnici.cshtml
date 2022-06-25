@@ -1,0 +1,32 @@
+﻿@model HotelBookingMRProjekat.ViewModels.HotelBookingSobaViewModel
+@{
+    ViewBag.Title = "Booking smeštaja";
+}
+
+<h2>Booking smeštaja</h2>
+
+@Html.ActionLink("Rezerviši sobu", "NoviBooking", "HotelTipSobas", new { @class = "btn btn-primary", @style = "margin-top:10px; margin-bottom:20px;" })
+
+<table id="booking-soba" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Naziv sobe</th>
+            <th>Username korisnika</th>
+            <th>Cena po danu</th>
+            <th>Ostajanje Od</th>
+            <th>Ostajanje Do</th>
+        </tr>
+        @foreach (var bookingSoba in Model.BookingiKorisnici)
+        {
+            <tr>
+                <td> @Html.ActionLink(bookingSoba.HotelSoba.NazivSobe, "IzmeniBooking", "HotelTipSobas", new { id = bookingSoba.Id }, null) </td>
+                <td>@bookingSoba.ApplicationUser.UserName</td>
+                <td>@bookingSoba.HotelSoba.CenaPoDanu EUR</td>
+                <td>@bookingSoba.OstajanjeOd.Date.ToString("dd MMM yyyy")</td>
+                <td>@bookingSoba.OstajanjeDo.Date.ToString("dd MMM yyyy")</td>
+            </tr>
+        }
+    </thead>
+    <tbody></tbody>
+</table>
+

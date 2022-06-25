@@ -1,0 +1,39 @@
+﻿@model HotelBookingMRProjekat.ViewModels.NovaSobaViewModel
+@{
+    ViewBag.Title = "Tipovi sobe";
+}
+
+<style>
+
+    .field-validation-error {
+        color: red;
+    }
+</style>
+
+<h2>Novi tip</h2>
+
+@using (Html.BeginForm("SnimiTipSobe", "HotelTipSobas"))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.HotelTipSoba.NazivTipaSobe)
+        @Html.TextBoxFor(m => m.HotelTipSoba.NazivTipaSobe, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.HotelTipSoba.NazivTipaSobe)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.HotelTipSoba.PansionTipaSobe)
+        @Html.TextBoxFor(m => m.HotelTipSoba.PansionTipaSobe, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.HotelTipSoba.PansionTipaSobe)
+    </div>
+
+    @Html.HiddenFor(m => m.HotelTipSoba.Id);
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Dodaj tip sobe</button>
+
+}
+
+@section scripts
+    {
+    @Scripts.Render("~/bundles/jqueryval")
+}

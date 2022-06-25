@@ -1,0 +1,83 @@
+﻿
+
+
+
+<h2>Booking smeštaja</h2>
+
+@Html.ActionLink("Dodaj booking", "NoviBooking", "HotelTipSobas", new { @class = "btn btn-primary", @style = "margin-top:10px; margin-bottom:20px;" })
+
+<table id="booking-soba" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Naziv sobe</th>
+            <th>Username korisnika</th>
+            <th>Cena po danu</th>
+            <th>Ostajanje Od</th>
+            <th>Ostajanje Do</th>
+            <th>Radnje</th>
+        </tr>
+    </thead>
+
+
+    <tbody></tbody>
+</table>
+
+
+
+
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+            var table = $("#booking-soba").DataTable({
+                ajax: {
+                    url: "/api/bookingsobaapi",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "hotelSoba.nazivSobe",
+                        render: function (data, type, hotelsoba) {
+                            return "<a href='/HotelTipSobas/IzmeniBooking/" + hotelsoba.id + " '>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "applicationUser.userName"
+                    },
+                    {
+                        data: "hotelSoba.cenaPoDanu"
+                    },
+                    {
+                        data: "ostajanjeOd"
+                    },
+                    {
+                        data: "ostajanjeDo"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-booking-id=" + data + ">Obriši</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#booking-soba").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Da li ste sigurni da želite da obrišete booking?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/bookingsobaapi/" + button.attr("data-booking-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}

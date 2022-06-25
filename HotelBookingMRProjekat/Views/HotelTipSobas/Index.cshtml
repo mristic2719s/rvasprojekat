@@ -1,0 +1,65 @@
+﻿
+<h2>Hotel sobe</h2>
+
+
+@Html.ActionLink("Dodaj hotel sobu", "NovaSoba", "HotelTipSobas", new { @class = "btn btn-primary", @style = "margin-top:10px; margin-bottom:20px;" })
+
+<table id="hotel-soba" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Naziv sobe</th>
+            <th>Tip sobe</th>
+            <th>Radnje </th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+
+
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+            var table = $("#hotel-soba").DataTable({
+                ajax: {
+                    url: "/api/hotelsobaapi",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "nazivSobe",
+                        render: function (data, type, hotelsoba) {
+                            return "<a href='/HotelTipSobas/Izmeni/" + hotelsoba.id + " '>" + hotelsoba.nazivSobe + "</a>";
+                        }
+                    },
+                    {
+                        data: "hotelTipSoba.nazivTipaSobe"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-hotel-id=" + data + ">Obriši</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#hotel-soba").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Da li ste sigurni da želite da obrišete hotel sobu?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/hotelsobaapi/" + button.attr("data-hotel-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+}

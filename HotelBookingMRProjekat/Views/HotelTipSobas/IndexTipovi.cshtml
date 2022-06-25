@@ -1,0 +1,43 @@
+﻿@model PagedList.IPagedList<HotelBookingMRProjekat.Models.HotelTipSoba>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+<h2>Booking smeštaja</h2>
+
+@Html.ActionLink("Dodaj tip sobe", "NoviTipSobe", "HotelTipSobas", new { @class = "btn btn-primary", @style = "margin-top:10px; margin-bottom:20px;" })
+
+@using (Html.BeginForm("IndexTipovi", "HotelTipSobas", FormMethod.Get))
+{
+    <p>
+        Pretraži: @Html.TextBox("Search_Podaci", ViewBag.FilterValue as string)
+        <input type="submit" value="Pretraži" />
+    </p>
+}
+
+<table id="booking-tip" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Naziv Tipa Sobe", "IndexTipovi", new { Sorting_Order = ViewBag.SortingName })
+            </th>
+            <th>
+                @Html.ActionLink("Pansion Tipa Sobe", "IndexTipovi", new { Sorting_Order = ViewBag.SortingPansion })
+            </th>
+            <th>Radnje</th>
+        </tr>
+        @foreach (var bookingTip in Model)
+        {
+            <tr>
+                <td> @Html.ActionLink((string)bookingTip.NazivTipaSobe, "IzmeniTipSobe", "HotelTipSobas", new { id = bookingTip.Id }, null) </td>
+                <td>@bookingTip.PansionTipaSobe</td>
+                <td> @Html.ActionLink("Obriši", "ObrisiTipSobe", "HotelTipSobas", new { id = bookingTip.Id }, null)</td>
+            </tr>
+        }
+
+
+    </thead>
+    <tbody></tbody>
+</table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, Page_No =>Url.Action("IndexTipovi",
+    new { Page_No, Sorting_Order= ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))

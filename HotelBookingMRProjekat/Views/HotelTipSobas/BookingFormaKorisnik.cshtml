@@ -1,0 +1,52 @@
+﻿@model HotelBookingMRProjekat.ViewModels.HotelBookingSobaViewModel
+@{
+    ViewBag.Title = "Booking forma korisnik";
+
+}
+
+
+<style>
+
+    .field-validation-error {
+        color: red;
+    }
+</style>
+
+<h2>Novi booking</h2>
+
+@using (Html.BeginForm("SnimiBooking", "HotelTipSobas"))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BookingSoba.OstajanjeOd)
+        @Html.TextBoxFor(m => m.BookingSoba.OstajanjeOd, "{0:d MMM yyyy}", new { @class = "form-control", @type = "text" })
+        @Html.ValidationMessageFor(m => m.BookingSoba.OstajanjeOd)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BookingSoba.OstajanjeDo)
+        @Html.TextBoxFor(m => m.BookingSoba.OstajanjeDo, "{0:d MMM yyyy}", new { @class = "form-control", @type = "text" })
+        @Html.ValidationMessageFor(m => m.BookingSoba.OstajanjeDo)
+    </div>
+
+    <div class="form-group">
+        @Html.ValidationMessageFor(m => m.BookingSoba.ApplicationUserId)
+        <input id="ApplicationUserId" name="BookingSoba.ApplicationUserId" type="hidden" value="@Model.UserId">
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BookingSoba.HotelSobaId)
+        @Html.DropDownListFor(m => m.BookingSoba.HotelSobaId, new SelectList(Model.HotelSobe, "Id", "NazivSobe"), "Izaberite naziv sobe", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.BookingSoba.HotelSobaId)
+    </div>
+
+    @Html.HiddenFor(m => m.BookingSoba.Id);
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Dodaj booking</button>
+
+}
+
+@section scripts
+    {
+    @Scripts.Render("~/bundles/jqueryval")
+}
